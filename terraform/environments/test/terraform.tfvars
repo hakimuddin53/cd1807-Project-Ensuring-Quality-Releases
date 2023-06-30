@@ -6,7 +6,7 @@ tenant_id = "20e1f086-e2a8-4a20-b541-14f3dff6ed0c"
 
 # Resource Group/Location
 location = "East US"
-resource_group_name = "Azuredevops"
+resource_group = "Azuredevops"
 application_type = "myApplication"
 
 # Network
