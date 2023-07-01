@@ -1,152 +1,150 @@
 name: Azure Pipelines
 
 stages:
-  - stage: "Provisioning"
+  # - stage: "Provisioning"
+  #   jobs:
+  #     - job: provision_infrastructure
+  #       displayName: "Provision Infrastructure"
+  #       pool: AgentPoolProject3
+  #       steps:
+  #         - task: DownloadSecureFile@1
+  #           displayName: "Download terraform.tfvars file"
+  #           name: tfvars
+  #           inputs:
+  #             secureFile: "terraform.tfvars"
+
+  #         - task: Bash@3
+  #           displayName: "Copy terraform.tfvars file"
+  #           inputs:
+  #             targetType: "inline"
+  #             script: |
+  #               #!/bin/bash
+  #               sudo cp $(tfvars.secureFilePath) terraform/environments/test/terraform.tfvars
+
+  #         - task: TerraformInstaller@0
+  #           displayName: "Install Terraform"
+  #           inputs:
+  #             terraformVersion: '0.14.11'
+
+  #         - task: TerraformTaskV1@0
+  #           displayName: "Terraform Init"
+  #           inputs:
+  #             provider: "azurerm"
+  #             command: "init"
+  #             workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+  #             backendServiceArm: "MyServiceConnection"
+  #             backendAzureRmResourceGroupName: "Azuredevops"
+  #             backendAzureRmStorageAccountName: "tfstate176319980"
+  #             backendAzureRmContainerName: "tfstate"
+  #             backendAzureRmKey: "qhVBb4HgY3fH9rIwYTUjQe3IDZNZV9xCRQUKidanXxIlX/ehQga69jf5ByLCdg4lNXE2sGLPRrpW+AStvqlDvg=="
+
+  #         - task: TerraformTaskV1@0
+  #           displayName: "Terraform Validate"
+  #           inputs:
+  #             provider: "azurerm"
+  #             command: "validate"
+  #             workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+
+  #         - task: TerraformTaskV1@0
+  #           displayName: "Terraform Plan"
+  #           inputs:
+  #             provider: "azurerm"
+  #             command: "plan"
+  #             workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+  #             environmentServiceNameAzureRM: "MyServiceConnection"
+
+  #         - task: TerraformTaskV1@0
+  #           displayName: "Terraform Apply"
+  #           inputs:
+  #             provider: "azurerm"
+  #             command: "apply"
+  #             workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+  #             commandOptions: "-auto-approve"
+  #             environmentServiceNameAzureRM: "MyServiceConnection"
+
+  - stage: "Build"
     jobs:
-      - job: provision_infrastructure
-        displayName: "Provision Infrastructure"
+      - job: build_artifacts
+        displayName: "Build Artifacts"
         pool: AgentPoolProject3
         steps:
-          - task: DownloadSecureFile@1
-            displayName: "Download terraform.tfvars file"
-            name: tfvars
+          - task: ArchiveFiles@2
+            displayName: "Archive FakeRestAPI"
             inputs:
-              secureFile: "terraform.tfvars"
+              rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi"
+              includeRootFolder: false
+              archiveType: "zip"
+              archiveFile: "$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip"
+              verbose: true
 
-          - task: Bash@3
-            displayName: "Copy terraform.tfvars file"
+          - task: PublishPipelineArtifact@1
+            displayName: "Publish FakeRestAPI"
             inputs:
-              targetType: "inline"
-              script: |
-                #!/bin/bash
-                sudo cp $(tfvars.secureFilePath) terraform/environments/test/terraform.tfvars
+              targetPath: "$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip"
+              artifactName: "fakerestapi"
 
-          - task: TerraformInstaller@0
-            displayName: "Install Terraform"
+          - task: ArchiveFiles@2
+            displayName: "Archive Selenium"
             inputs:
-              terraformVersion: '0.14.11'
+              rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/selenium"
+              includeRootFolder: false
+              archiveType: "zip"
+              archiveFile: "$(Build.ArtifactStagingDirectory)/selenium-$(Build.BuildId).zip"
+              verbose: true
 
-          - task: TerraformTaskV1@0
-            displayName: "Terraform Init"
+          - task: PublishPipelineArtifact@1
+            displayName: "Publish Selenium"
             inputs:
-              provider: "azurerm"
-              command: "init"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
-              backendServiceArm: "MyServiceConnection"
-              backendAzureRmResourceGroupName: "Azuredevops"
-              backendAzureRmStorageAccountName: "tfstate176319980"
-              backendAzureRmContainerName: "tfstate"
-              backendAzureRmKey: "qhVBb4HgY3fH9rIwYTUjQe3IDZNZV9xCRQUKidanXxIlX/ehQga69jf5ByLCdg4lNXE2sGLPRrpW+AStvqlDvg=="
+              targetPath: "$(Build.ArtifactStagingDirectory)/selenium-$(Build.BuildId).zip"
+              artifactName: "drop-selenium"
 
-          - task: TerraformTaskV1@0
-            displayName: "Terraform Validate"
-            inputs:
-              provider: "azurerm"
-              command: "validate"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+  - stage: "Deploy"
+    jobs:
+      - deployment: deploy_fakerestapi
+        displayName: "Deploy FakeRestAPI"
+        pool: AgentPoolProject3
+        environment: "Test"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureWebApp@1
+                  displayName: "Deploy Azure WebApp"
+                  inputs:
+                    azureSubscription: "MyServiceConnection"
+                    appType: "webAppLinux"
+                    appName: "Web-App-Azure-Devops-Project-3"
+                    package: "$(Pipeline.Workspace)/fakerestapi/fakerestapi-$(Build.BuildId).zip"
+                    deploymentMethod: "auto"
 
-          - task: TerraformTaskV1@0
-            displayName: "Terraform Plan"
-            inputs:
-              provider: "azurerm"
-              command: "plan"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
-              environmentServiceNameAzureRM: "MyServiceConnection"
-
-          - task: TerraformTaskV1@0
-            displayName: "Terraform Apply"
-            inputs:
-              provider: "azurerm"
-              command: "apply"
-              workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
-              commandOptions: "-auto-approve"
-              environmentServiceNameAzureRM: "MyServiceConnection"
-
-  # - stage: "Build"
-  #   jobs:
-  #     - job: build_artifacts
-  #       displayName: "Build Artifacts"
-  #       pool: myAgentPool
-  #       steps:
-  #         - task: ArchiveFiles@2
-  #           displayName: "Archive FakeRestAPI"
-  #           inputs:
-  #             rootFolderOrFile: "$(System.DefaultWorkingDirectory)/fakerestapi"
-  #             includeRootFolder: false
-  #             archiveType: "zip"
-  #             archiveFile: "$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip"
-  #             verbose: true
-
-  #         - task: PublishPipelineArtifact@1
-  #           displayName: "Publish FakeRestAPI"
-  #           inputs:
-  #             targetPath: "$(Build.ArtifactStagingDirectory)/fakerestapi-$(Build.BuildId).zip"
-  #             artifactName: "fakerestapi"
-
-  #         - task: ArchiveFiles@2
-  #           displayName: "Archive Selenium"
-  #           inputs:
-  #             rootFolderOrFile: "$(System.DefaultWorkingDirectory)/automatedtesting/selenium"
-  #             includeRootFolder: false
-  #             archiveType: "zip"
-  #             archiveFile: "$(Build.ArtifactStagingDirectory)/selenium-$(Build.BuildId).zip"
-  #             verbose: true
-
-  #         - task: PublishPipelineArtifact@1
-  #           displayName: "Publish Selenium"
-  #           inputs:
-  #             targetPath: "$(Build.ArtifactStagingDirectory)/selenium-$(Build.BuildId).zip"
-  #             artifactName: "drop-selenium"
-
-  # - stage: "Deploy"
-  #   jobs:
-  #     - deployment: deploy_fakerestapi
-  #       displayName: "Deploy FakeRestAPI"
-  #       pool: myAgentPool
-  #         # vmImage: "ubuntu-18.04"
-  #       environment: "Test"
-  #       strategy:
-  #         runOnce:
-  #           deploy:
-  #             steps:
-  #               - task: AzureWebApp@1
-  #                 displayName: "Deploy Azure WebApp"
-  #                 inputs:
-  #                   azureSubscription: "myServiceConnection"
-  #                   appType: "webAppLinux"
-  #                   appName: "Web-App-Project-3" #"myApplication-AppService-AS" 
-  #                   #"Web-App-Project-3"
-  #                   package: "$(Pipeline.Workspace)/fakerestapi/fakerestapi-$(Build.BuildId).zip"
-  #                   deploymentMethod: "auto"
-
-  #     - deployment: deploy_vm
-  #       displayName: "Deploy VM"
-  #       environment:
-  #         name: "Test"
-  #         resourceType: VirtualMachine
-  #       strategy:
-  #         runOnce:
-  #           deploy:
-  #             steps:
-  #               - task: Bash@3
-  #                 displayName: "Configure Selenium"
-  #                 inputs:
-  #                   targetType: "inline"
-  #                   script: |
-  #                     #!/bin/bash
-  #                     export LC_ALL=C
-  #                     sudo apt-get install -y software-properties-common
-  #                     sudo apt-add-repository -y universe
-  #                     sudo apt-add-repository -y ppa:deadsnakes/ppa
-  #                     sudo apt-get -y update
-  #                     sudo apt-get install -y python3.8 python3.8-distutils python3-pip unzip chromium-browser chromium-chromedriver
-  #                     sudo rm /usr/bin/python3
-  #                     sudo ln -s /usr/bin/python3.8 /usr/bin/python3
-  #                     sudo apt remove -y python3-pip
-  #                     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-  #                     sudo python3 get-pip.py
-  #                     sudo pip3 install --upgrade pip
-  #                     sudo pip3 install selenium
+      - deployment: deploy_vm
+        displayName: "Deploy VM"
+        environment:
+          name: "Test"
+          resourceType: VirtualMachine
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: Bash@3
+                  displayName: "Configure Selenium"
+                  inputs:
+                    targetType: "inline"
+                    script: |
+                      #!/bin/bash
+                      export LC_ALL=C
+                      sudo apt-get install -y software-properties-common
+                      sudo apt-add-repository -y universe
+                      sudo apt-add-repository -y ppa:deadsnakes/ppa
+                      sudo apt-get -y update
+                      sudo apt-get install -y python3.8 python3.8-distutils python3-pip unzip chromium-browser chromium-chromedriver
+                      sudo rm /usr/bin/python3
+                      sudo ln -s /usr/bin/python3.8 /usr/bin/python3
+                      sudo apt remove -y python3-pip
+                      curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+                      sudo python3 get-pip.py
+                      sudo pip3 install --upgrade pip
+                      sudo pip3 install selenium
 
   # - stage: Test
   #   jobs:
@@ -165,17 +163,17 @@ stages:
               
   #                 sudo mkdir -p /var/log/selenium
   #                 sudo chmod 777 /var/log/selenium
-  #                 python3 -u selenium-test.py 2>&1 | sudo tee -a /var/log/selenium/selenium-test.log
+  #                 python3 -u add_remove_from_cart.py 2>&1 | sudo tee -a /var/log/selenium/selenium.log
 
   #                 cd $(System.DefaultWorkingDirectory)
   #                 mkdir -p log/selenium
               
-  #                 sudo cp /var/log/selenium/selenium-test.log log/selenium/selenium-test.log
+  #                 sudo cp /var/log/selenium/selenium.log log/selenium/selenium.log
   #               displayName: Run Selenium Tests
   #             - task: PublishPipelineArtifact@1
   #               displayName: Publish Selenium Logs
   #               inputs:
-  #                 targetPath: '$(System.DefaultWorkingDirectory)/log/selenium/selenium-test.log'
+  #                 targetPath: '$(System.DefaultWorkingDirectory)/log/selenium/selenium.log'
   #                 artifactName: 'drop-selenium-logs'
 
   #     - job: TestJMeter
