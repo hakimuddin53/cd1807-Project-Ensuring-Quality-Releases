@@ -32,7 +32,7 @@ stages:
               provider: "azurerm"
               command: "init"
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
-              backendServiceArm: "myServiceConnection"
+              backendServiceArm: "MyServiceConnection"
               backendAzureRmResourceGroupName: "Azuredevops"
               backendAzureRmStorageAccountName: "tfstate176319980"
               backendAzureRmContainerName: "tstate"
@@ -51,7 +51,7 @@ stages:
               provider: "azurerm"
               command: "plan"
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
-              environmentServiceNameAzureRM: "myServiceConnection"
+              environmentServiceNameAzureRM: "MyServiceConnection"
 
           - task: TerraformTaskV1@0
             displayName: "Terraform Apply"
@@ -60,7 +60,7 @@ stages:
               command: "apply"
               workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
               commandOptions: "-auto-approve"
-              environmentServiceNameAzureRM: "myServiceConnection"
+              environmentServiceNameAzureRM: "MyServiceConnection"
 
   # - stage: "Build"
   #   jobs:
