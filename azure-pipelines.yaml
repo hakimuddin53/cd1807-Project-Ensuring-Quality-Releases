@@ -103,7 +103,7 @@ stages:
       - deployment: deploy_fakerestapi
         displayName: "Deploy FakeRestAPI"
         pool: AgentPoolProject3
-        environment: "Test"
+        environment: "Test_VM"
         strategy:
           runOnce:
             deploy:
@@ -120,7 +120,7 @@ stages:
       - deployment: deploy_vm
         displayName: "Deploy VM"
         environment:
-          name: "Test"
+          name: "Test_VM"
           resourceType: VirtualMachine
         strategy:
           runOnce:
@@ -151,7 +151,7 @@ stages:
   #     - deployment: test_vm
   #       displayName: Test on Virtual Machine
   #       environment:
-  #         name: 'Test'
+  #         name: 'Test_VM'
   #         resourceType: VirtualMachine
   #       strategy:
   #         runOnce:
