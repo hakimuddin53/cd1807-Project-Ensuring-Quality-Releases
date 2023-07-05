@@ -66,7 +66,6 @@ stages:
     jobs:
       - job: build_artifacts
         displayName: "Build Artifacts"
-        pool: AgentPoolProject3
         steps:
           - task: ArchiveFiles@2
             displayName: "Archive FakeRestAPI"
@@ -102,7 +101,6 @@ stages:
     jobs:
       - deployment: deploy_fakerestapi
         displayName: "Deploy FakeRestAPI"
-        pool: AgentPoolProject3
         environment: "Test_VM"
         strategy:
           runOnce:
