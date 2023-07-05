@@ -1,6 +1,6 @@
 name: Azure Pipelines
 
-pool: Default
+pool: AgentPoolProject3
 
 variables:  
   environmentName: 'Test_VM'
