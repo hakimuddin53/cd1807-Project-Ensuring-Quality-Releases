@@ -1,5 +1,8 @@
 name: Azure Pipelines
 
+variables:  
+  environmentName: 'Test_VM'
+
 stages:
   # - stage: "Provisioning"
   #   jobs:
