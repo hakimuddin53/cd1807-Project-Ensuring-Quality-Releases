@@ -72,6 +72,10 @@ stages:
         steps: 
         # Postman - Install Newman    
         # ToDo: Update the command and verify the working directory
+        - task: NodeTool@0
+          displayName: Install Node v12.X
+          inputs:
+            versionSpec: '12.x'
         - task: CmdLine@2
           displayName: Install Newman
           inputs:
