@@ -76,11 +76,10 @@ stages:
           displayName: Install Node v12.X
           inputs:
             versionSpec: '12.x'
-        - task: CmdLine@2
-          displayName: Install Newman
-          inputs:
-            script: 'sudo npm install -g newman'
-            workingDirectory: $(System.DefaultWorkingDirectory)
+        - bash: |
+                npm install -g newman
+                mkdir -p log/newman
+          displayName: Install Newman CLI
         # Postman Data Validation Test Suite    
         # ToDo: Verify the working directory
         - task: CmdLine@2
