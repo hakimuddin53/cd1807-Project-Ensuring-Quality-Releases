@@ -66,4 +66,10 @@ def run_tests():
 
 
 if __name__ == "__main__":
-    run_tests()
+    N_ITEMS = 6
+    TEST_USERNAME = 'standard_user'
+    TEST_PASSWORD = 'secret_sauce'
+    driver = login(TEST_USERNAME, TEST_PASSWORD)
+    add_items_to_cart(driver, N_ITEMS)
+    remove_items_to_cart(driver, N_ITEMS)
+    print(timestamp() + 'UI tests are all completed')
