@@ -207,7 +207,7 @@ stages:
                     if [ ! -d "$DIR" ]; then
                         mkdir app
                     fi
-                    mv $(System.DefaultWorkingDirectory)/drop-selinium-ui-test/$(Build.BuildId)-selenium-ui-test.zip app
+                    mv $(Pipeline.Workspace)/drop-selinium-ui-test/$(Build.BuildId)-selenium-ui-test.zip app
                     cd app
                     unzip -o $(Build.BuildId)-selenium-ui-test.zip
                     FILE=/home/devopsagent/app/chromedriver_linux64.zip
