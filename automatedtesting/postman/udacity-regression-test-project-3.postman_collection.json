@@ -21,6 +21,16 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function() {\r",
+							"}, 60000);"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -63,6 +73,16 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function() {\r",
+							"}, 60000);"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -92,6 +112,16 @@
 							"pm.test(\"Successful response\", function () {\r",
 							"    pm.expect(pm.response.text()).to.include(\"success\");\r",
 							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"setTimeout(function() {\r",
+							"}, 60000);"
 						],
 						"type": "text/javascript"
 					}
