@@ -4,66 +4,66 @@ variables:
   environmentName: 'Test_VM'
 
 stages:
-    # - stage: "Provisioning"
-    #   jobs:
-    #     - job: provision_infrastructure
-    #       displayName: "Provision Infrastructure"
-    #       pool: AgentPoolProject3
-    #       steps:
-    #         - task: DownloadSecureFile@1
-    #           displayName: "Download terraform.tfvars file"
-    #           name: tfvars
-    #           inputs:
-    #             secureFile: "terraform.tfvars"
+    - stage: "Provisioning"
+      jobs:
+        - job: provision_infrastructure
+          displayName: "Provision Infrastructure"
+          pool: AgentPoolProject3
+          steps:
+            - task: DownloadSecureFile@1
+              displayName: "Download terraform.tfvars file"
+              name: tfvars
+              inputs:
+                secureFile: "terraform.tfvars"
   
-    #         - task: Bash@3
-    #           displayName: "Copy terraform.tfvars file"
-    #           inputs:
-    #             targetType: "inline"
-    #             script: |
-    #               #!/bin/bash
-    #               sudo cp $(tfvars.secureFilePath) terraform/environments/test/terraform.tfvars
+            - task: Bash@3
+              displayName: "Copy terraform.tfvars file"
+              inputs:
+                targetType: "inline"
+                script: |
+                  #!/bin/bash
+                  sudo cp $(tfvars.secureFilePath) terraform/environments/test/terraform.tfvars
   
-    #         - task: TerraformInstaller@0
-    #           displayName: "Install Terraform"
-    #           inputs:
-    #             terraformVersion: '0.14.11'
+            - task: TerraformInstaller@0
+              displayName: "Install Terraform"
+              inputs:
+                terraformVersion: '0.14.11'
   
-    #         - task: TerraformTaskV1@0
-    #           displayName: "Terraform Init"
-    #           inputs:
-    #             provider: "azurerm"
-    #             command: "init"
-    #             workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
-    #             backendServiceArm: "MyServiceConnection"
-    #             backendAzureRmResourceGroupName: "Azuredevops"
-    #             backendAzureRmStorageAccountName: "tfstate176319980"
-    #             backendAzureRmContainerName: "tfstate"
-    #             backendAzureRmKey: "qhVBb4HgY3fH9rIwYTUjQe3IDZNZV9xCRQUKidanXxIlX/ehQga69jf5ByLCdg4lNXE2sGLPRrpW+AStvqlDvg=="
+            - task: TerraformTaskV1@0
+              displayName: "Terraform Init"
+              inputs:
+                provider: "azurerm"
+                command: "init"
+                workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+                backendServiceArm: "MyServiceConnection"
+                backendAzureRmResourceGroupName: "Azuredevops"
+                backendAzureRmStorageAccountName: "tfstate176319980"
+                backendAzureRmContainerName: "tfstate"
+                backendAzureRmKey: "qhVBb4HgY3fH9rIwYTUjQe3IDZNZV9xCRQUKidanXxIlX/ehQga69jf5ByLCdg4lNXE2sGLPRrpW+AStvqlDvg=="
   
-    #         - task: TerraformTaskV1@0
-    #           displayName: "Terraform Validate"
-    #           inputs:
-    #             provider: "azurerm"
-    #             command: "validate"
-    #             workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+            - task: TerraformTaskV1@0
+              displayName: "Terraform Validate"
+              inputs:
+                provider: "azurerm"
+                command: "validate"
+                workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
   
-    #         - task: TerraformTaskV1@0
-    #           displayName: "Terraform Plan"
-    #           inputs:
-    #             provider: "azurerm"
-    #             command: "plan"
-    #             workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
-    #             environmentServiceNameAzureRM: "MyServiceConnection"
+            - task: TerraformTaskV1@0
+              displayName: "Terraform Plan"
+              inputs:
+                provider: "azurerm"
+                command: "plan"
+                workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+                environmentServiceNameAzureRM: "MyServiceConnection"
   
-    #         - task: TerraformTaskV1@0
-    #           displayName: "Terraform Apply"
-    #           inputs:
-    #             provider: "azurerm"
-    #             command: "apply"
-    #             workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
-    #             commandOptions: "-auto-approve"
-    #             environmentServiceNameAzureRM: "MyServiceConnection"  
+            - task: TerraformTaskV1@0
+              displayName: "Terraform Apply"
+              inputs:
+                provider: "azurerm"
+                command: "apply"
+                workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+                commandOptions: "-auto-approve"
+                environmentServiceNameAzureRM: "MyServiceConnection"  
   
     - stage: "Build"
       jobs:
