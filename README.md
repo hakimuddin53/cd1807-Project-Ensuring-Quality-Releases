@@ -30,6 +30,9 @@ This is the third project for the Udacity Cloud DevOps using Microsoft Azure Nan
 * Postman Summarize Test Result
 ![Postman_Publish_Test_Results](https://github.com/hakimuddin53/cd1807-Project-Ensuring-Quality-Releases/assets/80934027/86e9be14-ecfc-4fa8-9d97-89d457d7da32)
 
+* Postman Test Run
+![Postman_Test_Summary](https://github.com/hakimuddin53/cd1807-Project-Ensuring-Quality-Releases/assets/80934027/2f27f899-ed67-490d-8638-84aef104919b)
+
 * Jmeter Stress Test
 ![Jmeter_Stress_Test](https://github.com/hakimuddin53/cd1807-Project-Ensuring-Quality-Releases/assets/80934027/405f4c3c-317d-4d45-8bab-4dfb36001672)
 
@@ -58,17 +61,3 @@ This is the third project for the Udacity Cloud DevOps using Microsoft Azure Nan
 
 * Selinium Log Analytics
 ![Selinium_Log_Analytics](https://github.com/hakimuddin53/cd1807-Project-Ensuring-Quality-Releases/assets/80934027/7ed0bd6c-3681-4ff7-8f85-3167aad7bbd7)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
