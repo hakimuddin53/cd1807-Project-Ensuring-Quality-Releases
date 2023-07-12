@@ -3,7 +3,6 @@
 This is the third project for the Udacity Cloud DevOps using Microsoft Azure Nanodegree Program, where we create disposable test environments and run a variety of automated tests with the click of a button. Additionally, we monitor and provide insight into an application's behavior, and determine root causes by querying the application’s custom log files.
 
 # Pipeline Build
-
 ![Build_Result_Pipeline](https://github.com/hakimuddin53/cd1807-Project-Ensuring-Quality-Releases/assets/80934027/fb3a9994-1beb-4d29-8a07-975b00932595)
 
 
