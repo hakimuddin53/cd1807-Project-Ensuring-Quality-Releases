@@ -4,7 +4,7 @@ variables:
   environmentName: 'Test_VM'
 
 stages:
-    - stage: "Provisioning"
+    # - stage: "Provisioning"
       # jobs:
         # - job: provision_infrastructure
         #   displayName: "Provision Infrastructure"
