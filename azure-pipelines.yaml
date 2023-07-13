@@ -5,7 +5,7 @@ variables:
 
 stages:
     - stage: "Provisioning"
-      jobs:
+      # jobs:
         # - job: provision_infrastructure
         #   displayName: "Provision Infrastructure"
         #   pool: AgentPoolProject3
