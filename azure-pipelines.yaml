@@ -4,107 +4,107 @@ variables:
   environmentName: 'Test_VM'
 
 stages:
-    # - stage: "Provisioning"
-      # jobs:
-        # - job: provision_infrastructure
-        #   displayName: "Provision Infrastructure"
-        #   pool: AgentPoolProject3
-        #   steps:
-        #     - task: DownloadSecureFile@1
-        #       displayName: "Download terraform.tfvars file"
-        #       name: tfvars
-        #       inputs:
-        #         secureFile: "terraform.tfvars"
+    - stage: "Provisioning"
+      jobs:
+        - job: provision_infrastructure
+          displayName: "Provision Infrastructure"
+          pool: AgentPoolProject3
+          steps:
+            - task: DownloadSecureFile@1
+              displayName: "Download terraform.tfvars file"
+              name: tfvars
+              inputs:
+                secureFile: "terraform.tfvars"
   
-        #     - task: Bash@3
-        #       displayName: "Copy terraform.tfvars file"
-        #       inputs:
-        #         targetType: "inline"
-        #         script: |
-        #           #!/bin/bash
-        #           sudo cp $(tfvars.secureFilePath) terraform/environments/test/terraform.tfvars
+            - task: Bash@3
+              displayName: "Copy terraform.tfvars file"
+              inputs:
+                targetType: "inline"
+                script: |
+                  #!/bin/bash
+                  sudo cp $(tfvars.secureFilePath) terraform/environments/test/terraform.tfvars
   
-        #     - task: TerraformInstaller@0
-        #       displayName: "Install Terraform"
-        #       inputs:
-        #         terraformVersion: '0.14.11'
+            - task: TerraformInstaller@0
+              displayName: "Install Terraform"
+              inputs:
+                terraformVersion: '0.14.11'
   
-        #     - task: TerraformTaskV1@0
-        #       displayName: "Terraform Init"
-        #       inputs:
-        #         provider: "azurerm"
-        #         command: "init"
-        #         workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
-        #         backendServiceArm: "MyServiceConnection"
-        #         backendAzureRmResourceGroupName: "Azuredevops"
-        #         backendAzureRmStorageAccountName: "tfstate176319980"
-        #         backendAzureRmContainerName: "tfstate"
-        #         backendAzureRmKey: "qhVBb4HgY3fH9rIwYTUjQe3IDZNZV9xCRQUKidanXxIlX/ehQga69jf5ByLCdg4lNXE2sGLPRrpW+AStvqlDvg=="
+            - task: TerraformTaskV1@0
+              displayName: "Terraform Init"
+              inputs:
+                provider: "azurerm"
+                command: "init"
+                workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+                backendServiceArm: "MyServiceConnection"
+                backendAzureRmResourceGroupName: "Azuredevops"
+                backendAzureRmStorageAccountName: "tfstate176319980"
+                backendAzureRmContainerName: "tfstate"
+                backendAzureRmKey: "qhVBb4HgY3fH9rIwYTUjQe3IDZNZV9xCRQUKidanXxIlX/ehQga69jf5ByLCdg4lNXE2sGLPRrpW+AStvqlDvg=="
   
-        #     - task: TerraformTaskV1@0
-        #       displayName: "Terraform Validate"
-        #       inputs:
-        #         provider: "azurerm"
-        #         command: "validate"
-        #         workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+            - task: TerraformTaskV1@0
+              displayName: "Terraform Validate"
+              inputs:
+                provider: "azurerm"
+                command: "validate"
+                workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
   
-        #     - task: TerraformTaskV1@0
-        #       displayName: "Terraform Plan"
-        #       inputs:
-        #         provider: "azurerm"
-        #         command: "plan"
-        #         workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
-        #         environmentServiceNameAzureRM: "MyServiceConnection"
+            - task: TerraformTaskV1@0
+              displayName: "Terraform Plan"
+              inputs:
+                provider: "azurerm"
+                command: "plan"
+                workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+                environmentServiceNameAzureRM: "MyServiceConnection"
   
-        #     - task: TerraformTaskV1@0
-        #       displayName: "Terraform Apply"
-        #       inputs:
-        #         provider: "azurerm"
-        #         command: "apply"
-        #         workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
-        #         commandOptions: "-auto-approve"
-        #         environmentServiceNameAzureRM: "MyServiceConnection"  
+            - task: TerraformTaskV1@0
+              displayName: "Terraform Apply"
+              inputs:
+                provider: "azurerm"
+                command: "apply"
+                workingDirectory: "$(System.DefaultWorkingDirectory)/terraform/environments/test/"
+                commandOptions: "-auto-approve"
+                environmentServiceNameAzureRM: "MyServiceConnection"  
   
     - stage: "Build"
       jobs:
       - job: build_artifacts
         displayName: "Build Artifacts"
         steps: 
-        # # Postman - Install Newman    
-        # # ToDo: Update the command and verify the working directory
-        # - task: NodeTool@0
-        #   displayName: Install Node v12.X
-        #   inputs:
-        #     versionSpec: '12.x'
-        # - bash: |
-        #         npm install -g newman
-        #         mkdir -p log/newman
-        #   displayName: Install Newman CLI
-        # # Postman Data Validation Test Suite    
-        # # ToDo: Verify the working directory
-        # - task: CmdLine@2
-        #   displayName: Run Data Validation Tests
-        #   continueOnError: true
-        #   inputs:
-        #     script: 'newman run udacity-validation-test-project-3.postman_collection.json -e udacity-environment.postman_environment.json --reporters cli,junit --reporter-junit-export Postman-TEST-DataValidation.xml'
-        #     workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-        # # Postman Regression Test Suite    
-        # # ToDo: Verify the working directory
+        # Postman - Install Newman    
+        # ToDo: Update the command and verify the working directory
+        - task: NodeTool@0
+          displayName: Install Node v12.X
+          inputs:
+            versionSpec: '12.x'
+        - bash: |
+                npm install -g newman
+                mkdir -p log/newman
+          displayName: Install Newman CLI
+        # Postman Data Validation Test Suite    
+        # ToDo: Verify the working directory
+        - task: CmdLine@2
+          displayName: Run Data Validation Tests
+          continueOnError: true
+          inputs:
+            script: 'newman run udacity-validation-test-project-3.postman_collection.json -e udacity-environment.postman_environment.json --reporters cli,junit --reporter-junit-export Postman-TEST-DataValidation.xml'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+        # Postman Regression Test Suite    
+        # ToDo: Verify the working directory
         
-        # - task: CmdLine@2
-        #   displayName: Run Regression Tests
-        #   continueOnError: true
-        #   inputs:
-        #     script: 'newman run udacity-regression-test-project-3.postman_collection.json -e udacity-environment.postman_environment.json --reporters cli,junit --reporter-junit-export Postman-TEST-Regression.xml'
-        #     workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-        # # Postman - Publish Results         
-        # - task: PublishTestResults@2
-        #   inputs:
-        #     testResultsFormat: 'JUnit'
-        #     testResultsFiles: '**/Postman-TEST-*.xml'
-        #     searchFolder: '$(System.DefaultWorkingDirectory)'
-        #     mergeTestResults: true
-        #     testRunTitle: 'Regression test results'
+        - task: CmdLine@2
+          displayName: Run Regression Tests
+          continueOnError: true
+          inputs:
+            script: 'newman run udacity-regression-test-project-3.postman_collection.json -e udacity-environment.postman_environment.json --reporters cli,junit --reporter-junit-export Postman-TEST-Regression.xml'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+        # Postman - Publish Results         
+        - task: PublishTestResults@2
+          inputs:
+            testResultsFormat: 'JUnit'
+            testResultsFiles: '**/Postman-TEST-*.xml'
+            searchFolder: '$(System.DefaultWorkingDirectory)'
+            mergeTestResults: true
+            testRunTitle: 'Regression test results'
 
         #--------------------------------------------#
         # Selenium (UI) Test Suite - Archive the package  

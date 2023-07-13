@@ -36,6 +36,9 @@ This is the third project for the Udacity Cloud DevOps using Microsoft Azure Nan
 * Jmeter Stress Test
 ![Jmeter_Stress_Test](https://github.com/hakimuddin53/cd1807-Project-Ensuring-Quality-Releases/assets/80934027/405f4c3c-317d-4d45-8bab-4dfb36001672)
 
+* Jmeter Stress Test Report
+
+
 * Jmeter Endurance Test
 ![Jmeter_Endurance_Test](https://github.com/hakimuddin53/cd1807-Project-Ensuring-Quality-Releases/assets/80934027/2ba36c38-262a-4d4a-81ba-32fe346a237b)
 
