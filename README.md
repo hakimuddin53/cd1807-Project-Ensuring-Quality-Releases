@@ -37,10 +37,13 @@ This is the third project for the Udacity Cloud DevOps using Microsoft Azure Nan
 ![Jmeter_Stress_Test](https://github.com/hakimuddin53/cd1807-Project-Ensuring-Quality-Releases/assets/80934027/405f4c3c-317d-4d45-8bab-4dfb36001672)
 
 * Jmeter Stress Test Report
-
+![Jmeter_Stress_Test_Report](https://github.com/hakimuddin53/cd1807-Project-Ensuring-Quality-Releases/assets/80934027/f307b182-7d01-464a-9049-911b86c01877)
 
 * Jmeter Endurance Test
 ![Jmeter_Endurance_Test](https://github.com/hakimuddin53/cd1807-Project-Ensuring-Quality-Releases/assets/80934027/2ba36c38-262a-4d4a-81ba-32fe346a237b)
+
+* Jmeter Endurance Test Report
+![image](https://github.com/hakimuddin53/cd1807-Project-Ensuring-Quality-Releases/assets/80934027/1a8bdfc5-4027-43de-a6f1-acbb43c463f2)
 
 * Selinium UI Test
 ![Selinium_UI_Test_Result](https://github.com/hakimuddin53/cd1807-Project-Ensuring-Quality-Releases/assets/80934027/0189c917-f5a0-419a-9c7d-98956fe80f05)
